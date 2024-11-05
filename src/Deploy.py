@@ -14,13 +14,8 @@ account = os.getenv("ANVIL_ACCOUNT")
 private_key = os.getenv("ANVIL_PRIVATE_KEY")
 
 # Load compiled contract
-with open("compiled_contract.json") as json_file:
-    compiled_contract = json.load(json_file)
-
-# Get contract details
-contract_id = list(compiled_contract['contracts']['Contract.sol'].keys())[0]
-contract_bytecode = compiled_contract['contracts']['Contract.sol'][contract_id]['evm']['bytecode']['object']
-contract_abi = compiled_contract['contracts']['Contract.sol'][contract_id]['abi']
+contract_address, abi = deploy_contract(contract_file,"newContract",account,private_key,provider,chain_id)
+print(f"Contract deployed at {contract_address}")
 
 # Create contract instance
 new_contract = w3.eth.contract(abi=contract_abi, bytecode=contract_bytecode)
